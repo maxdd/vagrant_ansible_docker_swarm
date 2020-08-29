@@ -1,6 +1,6 @@
 # vagrant_ansible_docker_swarm
-Let's use Vagrant to spawn 2 VMs with docker as a service in a manager/worker swarm combination
-Docker-API shall be secure via tls client/server certificates
+- Let's use Vagrant to spawn 2 VMs with docker as a service in a manager/worker swarm combination
+- Docker-API shall be secure via tls client/server certificates
 
 ## How-to
 To install Vagrand on Ubuntu
@@ -14,7 +14,7 @@ To install Vagrand on Ubuntu
 
 To start Vagrand project (in the root of Vagrantfile)
 ```
-vagrant up
+    vagrant up
 ```
 
 ## TODO

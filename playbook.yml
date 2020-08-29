@@ -1,0 +1,7 @@
+- name: Code Challenge Vagrand/Ansible/Docker
+  hosts: all
+  connection: local
+  become: yes
+  become_user: root
+  roles:
+    - docker_install

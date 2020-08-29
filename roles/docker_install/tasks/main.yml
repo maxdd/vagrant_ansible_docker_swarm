@@ -1,0 +1,45 @@
+---
+# Install yum-utils
+- name: Install yum utils
+  yum:
+    name: yum-utils
+    state: present #ansible-lint warn 403 if latest
+
+# Install device-mapper-persistent-data
+- name: Install device-mapper-persistent-data
+  yum:
+    name: device-mapper-persistent-data
+    state: present #ansible-lint warn 403 if latest
+
+# Install lvm2
+- name: Install lvm2
+  yum:
+    name: lvm2
+    state: present #ansible-lint warn 403 if latest
+
+# Configure docker stable repository and its keys
+- name: Configure docker stable repo
+  yum_repository:
+    name: docker-ce-stable
+    description: Docker CE Stable - $basearch
+    file: external_repos
+    baseurl: https://download.docker.com/linux/centos/7/$basearch/stable
+    gpgcheck: 1
+    gpgkey: https://download.docker.com/linux/centos/gpg
+    enabled: 1
+
+# Yum install docker-ce package
+- name: Install docker-ce package
+  yum: pkg=docker-ce state=installed
+
+# Create a Docker group
+- name: Create a Docker group
+  group: name=docker state=present
+
+# Add Vagrant to Docker group to let vagrant user to run it
+- name: Add user vagrant to docker group
+  user:
+    name: vagrant
+    groups: docker
+    append: yes
+  become: yes

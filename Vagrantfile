@@ -1,5 +1,6 @@
 Vagrant.configure(2) do |config|
     config.vm.box = "centos/7"
+    config.disksize.size = '40GB' # requires vagrant-disksize plugin
 
     config.vm.define "docker_swarm_1" do |docker_swarm_1|
       # Let's move ssh guest port to a known one

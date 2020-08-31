@@ -6,3 +6,4 @@
     - docker_install
     - docker_secure
     - docker_services
+    - docker_swarm_setup

@@ -1,0 +1,26 @@
+---
+# Enable docker service
+- name: Enable docker service
+  service:
+    name: docker
+    enabled: yes
+
+# Add http API to be accesible from the external
+- name: Make Docker API available
+  lineinfile:
+    path: /lib/systemd/system/docker.service
+    regexp: 'ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock'
+    line: ExecStart=/usr/bin/dockerd -H fd:// -H tcp://0.0.0.0:2375 --containerd=/run/containerd/containerd.sock
+
+# Reload and restart docker service
+- name: Restart docker service
+  service:
+    name: docker
+    state: restarted
+    daemon_reload: yes
+
+# Check if service is started
+- name: Start docker service
+  service:
+    name: docker
+    state: started

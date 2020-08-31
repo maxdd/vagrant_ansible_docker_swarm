@@ -9,13 +9,20 @@ To install Vagrand on Ubuntu
     sudo apt install virtualbox
     curl -O https://releases.hashicorp.com/vagrant/2.2.10/vagrant_2.2.10_x86_64.deb
     sudo apt install ./vagrant_2.2.10_x86_64.deb
-    vagrant plugin install vagrant-disksize
     vagrant --version
+    vagrant plugin install vagrant-disksize
+    sudo apt install ansible
 ```
 
 To start Vagrand project (in the root of Vagrantfile)
 ```
     vagrant up
+```
+
+To start Ansible playbook
+
+```
+ansible-playbook playbook.yml -i hosts
 ```
 
 ## TODO

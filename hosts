@@ -1,0 +1,8 @@
+docker_swarm_1 ansible_host=192.168.55.10 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file='.vagrant/machines/docker_swarm_1/virtualbox/private_key'
+docker_swarm_2 ansible_host=192.168.55.20 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file='.vagrant/machines/docker_swarm_2/virtualbox/private_key'
+
+[docker_swarm_managers]
+docker_swarm_1
+
+[docker_swarm_workers]
+docker_swarm_2

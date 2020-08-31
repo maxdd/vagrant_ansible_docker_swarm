@@ -1,0 +1,21 @@
+---
+system_tmp: /tmp
+# Nat private network interface
+docker_api_interface: "eth1"
+
+# Used for certs generation
+host: "{{ hostvars[inventory_hostname]['ansible_' + docker_api_interface]['ipv4']['address'] }}"
+country: IT
+state: Trentino Alto-Adige
+locality: Trento
+organization: MyOrganization
+passphrase: notevenclose
+
+server_cert_path: /etc/docker
+client_cert_path: /etc/docker/client
+
+temp_path: "{{ system_tmp }}/ansible_dds"
+
+passphrase_file: "{{ temp_path }}/passphrase.txt"
+
+extfile: "{{ temp_path }}/extfile.cnf"

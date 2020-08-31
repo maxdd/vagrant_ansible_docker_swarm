@@ -4,4 +4,5 @@
   become_user: root
   roles:
     - docker_install
+    - docker_secure
     - docker_services

@@ -1,0 +1,34 @@
+---
+- name: Create a tempdir
+  file:
+    state: directory
+    path: "{{ temp_path }}"   
+
+- name: Remove passphrase file, if it exists
+  file:
+    state: absent
+    path: "{{ passphrase_file }}" 
+
+- name: Create passphrase file
+  file:
+    state: touch
+    path: "{{ passphrase_file }}" 
+
+- name: Add passphrase to the file
+  lineinfile:
+    dest: "{{ passphrase_file }}"
+    line: "{{ passphrase }}" 
+
+- name: Generate ca-key.pem
+  command: "openssl genrsa -aes256 -passout file:{{ passphrase_file }} -out {{ temp_path }}/ca-key.pem 4096"
+
+- name: Generate ca certificate   
+  command: "openssl req -new -x509 -days 365 -key {{ temp_path }}/ca-key.pem -sha256 -out {{ temp_path }}/ca.pem -passin file:{{ passphrase_file }} -subj '/C={{ country }}/ST={{state }}>/L={{ locality }}/O={{ organization }}/CN={{ host }}'"
+
+- include: generate_server_certs.yml
+- include: generate_client_certs.yml
+
+- name: Remove the temp directory
+  file:
+    state: absent
+    path: "{{ temp_path }}"

@@ -10,7 +10,7 @@
   lineinfile:
     path: /lib/systemd/system/docker.service
     regexp: 'ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock'
-    line: ExecStart=/usr/bin/dockerd -H fd:// -H tcp://0.0.0.0:2375 --containerd=/run/containerd/containerd.sock
+    line: ExecStart=/usr/bin/dockerd -H fd:// -H tcp://0.0.0.0:2376 --tlsverify --tlscacert={{ server_cert_path }}/ca.pem --tlscert={{ server_cert_path }}/server-cert.pem --tlskey={{ server_cert_path }}/server-key.pem --containerd=/run/containerd/containerd.sock
 
 # Reload and restart docker service
 - name: Restart docker service

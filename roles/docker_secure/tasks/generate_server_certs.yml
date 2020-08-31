@@ -1,32 +1,42 @@
 # generate_server_certs.yml 
 - name: Create server key
   command: openssl genrsa -out {{ temp_path }}/server-key.pem 4096
+  changed_when: false
 
-- name: Create the server CSR 
+- name: Create the server CSR
   command: "openssl req -subj '/CN={{ host }}' -sha256 -new -key {{ temp_path }}/server-key.pem -out {{ temp_path }}/server.csr"
+  changed_when: false
 
 - name: Remove extfile
   file:
     state: absent
-    path: "{{ extfile }}" 
+    path: "{{ extfile }}"
+    #mode: 644
 
 - name: Create extfile
   file:
-    state: touch 
-    path: "{{ extfile }}" 
+    state: touch
+    path: "{{ extfile }}"
+    mode: 0755
 
 - name: Add alt name to extfile
   lineinfile:
-    dest: "{{ extfile }}" 
+    dest: "{{ extfile }}"
     line: "subjectAltName = IP:{{ host }},IP:127.0.0.1"
 
-- name: Create the server certificate 
-  command: "openssl x509 -req -days 365 -sha256 -in {{ temp_path }}/server.csr -CA {{ temp_path }}/ca.pem -CAkey {{ temp_path }}/ca-key.pem -CAcreateserial -out {{ temp_path}}/server-cert.pem -extfile {{ temp_path}}/extfile.cnf -passin file:{{ passphrase_file }}"
+- name: Create the server certificate
+  command: >-
+    openssl x509 -req -days 365 -sha256 -in {{ temp_path }}/server.csr
+    -CA {{ temp_path }}/ca.pem -CAkey {{ temp_path }}/ca-key.pem -CAcreateserial
+    -out {{ temp_path }}/server-cert.pem -extfile {{ temp_path }}/extfile.cnf
+    -passin file:{{ passphrase_file }}
+  changed_when: false
 
 - name: Check that the server cert path exists
   file:
     state: directory
     path: "{{ server_cert_path }}"
+    mode: 0755
 
 - name: Copy server certs
   command: cp "{{ temp_path }}/{{ item }}" "{{ server_cert_path }}/."
@@ -34,9 +44,10 @@
     - ca.pem
     - server-cert.pem
     - server-key.pem
+  changed_when: false
 
 # Read-Only for Owner
-- name: Set file permissions 
+- name: Set file permissions
   file:
     path: "{{ server_cert_path }}/{{ item }}"
     mode: 0400
